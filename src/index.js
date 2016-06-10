@@ -9,6 +9,8 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import configureStore from './store/configureStore';
 import {loadCourses} from './components/course/courseActions';
 import {loadAuthors} from './actions/authorActions';
+import '../node_modules/toastr/build/toastr.min.css';
+
 const store = configureStore();
 // can pass initial state here i.e. load from server or local storage:
 store.dispatch(loadCourses());
