@@ -18,13 +18,13 @@ export class ManageCoursePage extends React.Component {
     this.updateCourseState = this.updateCourseState.bind(this);
   }
 
-  updateCourseState(event){
-    const field = event.target.name;
-    let course = this.state.course;
-    course[field] = event.target.value;
-    return this.setState({course:course});
+  componentWillReceiveProps(nextProps){
+    if(this.props.course.id != nextProps.course.id){
+      // populates form when existing course is loaded
+      this.setState({course: Object.assign({}, nextProps.course)});
+    }
   }
-
+  
   courseFormIsValid(){
     let formIsValid = true;
     let errors = {};
@@ -55,11 +55,11 @@ export class ManageCoursePage extends React.Component {
     this.context.router.push('/courses');
   }
 
-  componentWillReceiveProps(nextProps){
-    if(this.props.course.id != nextProps.course.id){
-      // populates form when existing course is loaded
-      this.setState({course: Object.assign({}, nextProps.course)});
-    }
+  updateCourseState(event){
+    const field = event.target.name;
+    let course = this.state.course;
+    course[field] = event.target.value;
+    return this.setState({course:course});
   }
 
   render() {
