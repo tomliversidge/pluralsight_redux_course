@@ -9,7 +9,7 @@ function loadCoursesSuccess(courses){
   };
 }
 
-function createCourseSuccess(course){
+export function createCourseSuccess(course){
   return {
     type: types.CREATE_COURSE_SUCCESS,
     course
