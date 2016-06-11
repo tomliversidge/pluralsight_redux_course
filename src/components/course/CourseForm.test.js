@@ -5,29 +5,74 @@ import CourseForm from './CourseForm';
 
 function setup(saving) {
   let props = {
-    course: {},
+    course: {
+      title: "Test Title",
+      category: "Test Category",
+      length: "Test Length"
+    },
     saving: saving,
     errors: {},
     onSave: () => {},
-    onChange: () => {}
+    onChange: () => {},
+    allAuthors: ['Tom', 'Sally', 'Geoff']
   };
   return shallow(<CourseForm {...props}/>);
 }
 
-describe('Course form via Enzyme', () => {
-  it('renders form and h1', () => {
+describe('Given a Course Form', () => {
+
+  it('the DOM includes the form', () => {
     const wrapper = setup();
     expect(wrapper.find('form').length).toBe(1);
+  });
+
+  it('the header text is "Manage Course"', () => {
+    const wrapper = setup();
     expect(wrapper.find('h1').text()).toEqual('Manage Course');
   });
 
-  it('save button is labelled save when not saving', () => {
-    const wrapper = setup(false);
-    expect(wrapper.find('input').props().value).toBe('Save');
+  describe('the form fields are correctly populated', ()=>{
+    it('Course Title', () => {
+      const wrapper = setup();
+      expect(wrapper.find('[label="Title"]').props().value).toBe('Test Title');
+    });
+    it('Category', () => {
+      const wrapper = setup();
+      expect(wrapper.find('[label="Category"]').props().value).toBe('Test Category');
+    });
+    it('Length', () => {
+      const wrapper = setup();
+      expect(wrapper.find('[label="Length"]').props().value).toBe('Test Length');
+    });
+    it('Authors', () => {
+      const wrapper = setup();
+      expect(wrapper.find('SelectInput').props().options)
+        .toInclude('Tom')
+        .toInclude('Geoff')
+        .toInclude('Sally');
+    });
   });
 
-  it('save button is labelled saving when saving', () => {
-    const wrapper = setup(true);
-    expect(wrapper.find('input').props().value).toBe('Saving...');
+  describe('when saving', () =>{
+    it('save button is labelled "Saving..."', () => {
+      const wrapper = setup(true);
+      expect(wrapper.find('input').props().value).toBe('Saving...');
+    });
+    it('save button is disabled', () => {
+      const wrapper = setup(true);
+      expect(wrapper.find('input').props().disable).toBe(true);
+    });
   });
+
+  describe('when not saving', ()=>{
+    it('save button is labelled "Save"', () => {
+      const wrapper = setup(false);
+      expect(wrapper.find('input').props().value).toBe('Save');
+    });
+    it('save button is enabled', () => {
+      const wrapper = setup(false);
+      expect(wrapper.find('input').props().disable).toBe(false);
+    });
+  });
+
 });
